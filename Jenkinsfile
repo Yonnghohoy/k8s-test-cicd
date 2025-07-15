@@ -1,20 +1,29 @@
 pipeline {
-    agent any
+    agent {
+        kubernetes {
+            yaml ''
+            defaultContainer 'docker' // <== 여기 중요!
+        }
+    }
     stages {
         stage('Clone') {
             steps {
-                git credentialsId: 'github-token', url: 'https://github.com/YOUR_ID/YOUR_REPO.git', branch: 'main'
+                git credentialsId: 'github-token', url: 'https://github.com/yonnghohoy/k8s-test-cicd.git', branch: 'main'
             }
         }
         stage('Build') {
             steps {
-                sh 'docker build -t flask-app:latest .'
+                container('docker') {
+                    sh 'docker version' // 컨테이너 안에서 docker 명령어 실행
+                    sh 'docker build -t flask-app:latest .'
+                }
             }
         }
         stage('Deploy') {
             steps {
-                sh 'kubectl apply -f k8s/deployment.yaml'
-                sh 'kubectl apply -f k8s/service.yaml'
+                container('docker') {
+                    sh 'kubectl apply -f k8s.yaml'
+                }
             }
         }
     }
