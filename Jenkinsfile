@@ -1,7 +1,7 @@
 pipeline {
     agent {
         kubernetes {
-            yaml ''
+            inheritFrom 'default'
             defaultContainer 'docker' // <== 여기 중요!
         }
     }
