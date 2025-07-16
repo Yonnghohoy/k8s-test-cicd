@@ -1,7 +1,7 @@
 pipeline {
     agent {
         kubernetes {
-            inheritFrom 'default'
+            lable 'docker-template'
             defaultContainer 'docker' // <== 여기 중요!
         }
     }
