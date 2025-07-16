@@ -1,7 +1,7 @@
 pipeline {
     agent {
         kubernetes {
-            lable 'docker-template'
+            label 'docker-template'
             defaultContainer 'docker' // <== 여기 중요!
         }
     }
